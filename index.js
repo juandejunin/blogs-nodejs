@@ -15,8 +15,11 @@ const puerto = 5000
 //configurar el cors
 app.use(cors())
 
-//convertir el body a un objeto js
+//convertir el body a un objeto js, esto es para recibir los parametros con conten type application  json
 app.use(express.json())
+
+//convertir cada propiedad de x www form urlencoded en json
+app.use(express.urlencoded({extended:true}))
 
 //Rutas pruebas harcodeadas
 app.get('/', (req, res) => {
