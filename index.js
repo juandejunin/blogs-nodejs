@@ -18,7 +18,7 @@ app.use(cors())
 //convertir el body a un objeto js
 app.use(express.json())
 
-//Rutas
+//Rutas pruebas harcodeadas
 app.get('/', (req, res) => {
     console.log('se ejecuto el endpoint probando')
 
@@ -32,12 +32,25 @@ app.get('/probando', (req, res) => {
     console.log('se ejecuto el endpoint probando')
 
     return res.status(200).json(
+        [{
+            curso: "master en chamuyo",
+            autor: "te paese que",
+            url: "elfantasma.com.ar"
+        },
         {
             curso: "master en chamuyo",
-            autor: "te paese que"
-        }
+            autor: "te paese que",
+            url: "elfantasma.com.ar"
+        }]
     )
 })
+
+//Rutas
+
+const rutas_articulo = require("./rutas/articulo.Ruta")
+
+//Cargar la ruta
+app.use('/api', rutas_articulo)
 
 //crear el servidor y escuchar peticiones http
 app.listen(puerto, () => {
