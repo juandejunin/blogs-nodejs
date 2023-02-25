@@ -8,7 +8,7 @@ router.get('/cursos', ArticuloControlador.cursos)
 
 //Rutas utiles
 router.post('/crear', ArticuloControlador.crear)
-router.get('/listar', ArticuloControlador.listar)
+router.get('/listar/:ultimos?', ArticuloControlador.listar)
 
 
 module.exports = router
