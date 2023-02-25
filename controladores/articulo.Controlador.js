@@ -27,20 +27,20 @@ const crear = (req, res) => {
     //Validar datos
     try {
         let = validar_titulo = !validator.isEmpty(parametros.titulo) &&
-            validator.isLength(parametros.titulo, {min:5 , max: undefined})
+            validator.isLength(parametros.titulo, { min: 5, max: undefined })
         let = validar_contenido = !validator.isEmpty(parametros.contenido)
 
-        if(! validar_titulo || ! validar_contenido){
+        if (!validar_titulo || !validar_contenido) {
             throw new Error("No se ha validado la informacion")
         }
 
-        
+
     } catch (error) {
         return res.status(400).json({
-            status:"error",
-            mensaje:"Faltan datos por enviar" 
+            status: "error",
+            mensaje: "Faltan datos por enviar"
         })
-        
+
     }
 
     //Crear el objeto a guardar
@@ -54,12 +54,12 @@ const crear = (req, res) => {
 
 
     //Guardar en la base de datos
-    articulo.save((error, articuloGuardado)=>{
+    articulo.save((error, articuloGuardado) => {
 
-        if(error || !articuloGuardado ){
+        if (error || !articuloGuardado) {
             return res.status(400).json({
-                status:"error",
-                mensaje:"No se ha guardado el articulo" 
+                status: "error",
+                mensaje: "No se ha guardado el articulo"
 
             })
         }
@@ -76,21 +76,30 @@ const crear = (req, res) => {
 
 }
 
-const listar = (req,res) => {
+const listar = (req, res) => {
 
-    let consulta = Articulo.find({}).exec((error,articulos) => {
-        if(error || ! articulos){
-            return res.status(404).json({
-                status:"error",
-                mensaje:"No se han encontrado articulos" 
+    let consulta = Articulo.find({})
+
+    if(req.params.ultimos){
+        consulta.limit(3)
+    }
+
+    
+
+    consulta.sort({ fecha: -1 })
+        .exec((error, articulos) => {
+            if (error || !articulos) {
+                return res.status(404).json({
+                    status: "error",
+                    mensaje: "No se han encontrado articulos"
+                })
+            }
+
+            return res.status(200).send({
+                status: "success",
+                articulos
             })
-        }
-
-        return res.status(200).send({
-            status: "success",
-            articulos
         })
-    })
 }
 module.exports = {
     prueba,
