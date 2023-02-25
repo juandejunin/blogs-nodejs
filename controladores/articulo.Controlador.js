@@ -1,4 +1,4 @@
-const validator = require("validator")
+const {validarArticulo} = require ("../helpers/validar")
 const Articulo = require('../modelos/Articulo')
 
 
@@ -6,26 +6,20 @@ const Articulo = require('../modelos/Articulo')
 const crear = (req, res) => {
     //Recoger los parametros por post a guardar
     let parametros = req.body
-    console.log(parametros)
 
     //Validar datos
     try {
-        let = validar_titulo = !validator.isEmpty(parametros.titulo) &&
-            validator.isLength(parametros.titulo, { min: 5, max: undefined })
-        let = validar_contenido = !validator.isEmpty(parametros.contenido)
+        validarArticulo(parametros)
+    }
 
-        if (!validar_titulo || !validar_contenido) {
-            throw new Error("No se ha validado la informacion")
-        }
-
-
-    } catch (error) {
+    catch (error) {
         return res.status(400).json({
             status: "error",
             mensaje: "Faltan datos por enviar"
         })
 
     }
+
 
     //Crear el objeto a guardar
     const articulo = new Articulo(parametros)
@@ -143,20 +137,12 @@ const editar = (req, res) => {
     // Recoger los datos del body
     let parametros = req.body
 
-    console.log(parametros)
-
-    //Validar datos
+    //Validar datos de los parametros
     try {
-        let = validar_titulo = !validator.isEmpty(parametros.titulo) &&
-            validator.isLength(parametros.titulo, { min: 5, max: undefined })
-        let = validar_contenido = !validator.isEmpty(parametros.contenido)
+        validarArticulo(parametros)
+    }
 
-        if (!validar_titulo || !validar_contenido) {
-            throw new Error("No se ha validado la informacion")
-        }
-
-
-    } catch (error) {
+    catch (error) {
         return res.status(400).json({
             status: "error",
             mensaje: "Faltan datos por enviar"
@@ -164,8 +150,9 @@ const editar = (req, res) => {
 
     }
 
+
     //Buscar y actualizar articulo
-    Articulo.findOneAndUpdate({_id: id}, req.body,{new:true},(error, articuloActualizado)=>{
+    Articulo.findOneAndUpdate({ _id: id }, req.body, { new: true }, (error, articuloActualizado) => {
         if (error || !articuloActualizado) {
             return res.status(500).json({
                 status: "error",
@@ -173,16 +160,18 @@ const editar = (req, res) => {
             })
         }
 
-         //Devolver respuesta
-         return res.status(200).json({
-            status:"success",
+        //Devolver respuesta
+        return res.status(200).json({
+            status: "success",
             articulo: articuloActualizado
-         })
+        })
 
     })
 
-   
+
 }
+
+
 
 module.exports = {
     crear,
