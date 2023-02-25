@@ -10,6 +10,8 @@ router.get('/cursos', ArticuloControlador.cursos)
 router.post('/crear', ArticuloControlador.crear)
 router.get('/listar/:ultimos?', ArticuloControlador.listar)
 router.get('/listarUno/:id', ArticuloControlador.listarUno)
+router.delete('/borrar/:id', ArticuloControlador.borrar)
+
 
 
 module.exports = router

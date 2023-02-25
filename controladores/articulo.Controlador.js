@@ -128,13 +128,38 @@ const listarUno = (req, res) => {
 
 }
 
+const borrar = (req, res) => {
+    // Recoger un id por url
+    let id = req.params.id
+
+    //buscar el articulo con la id recibida por parametro url
+    Articulo.findByIdAndDelete({_id : id}, (error, articuloBorrado)=>{
+
+        if (error || !articuloBorrado) {
+            return res.status(404).json({
+                status: "error",
+                mensaje: "No se han borrado el articulo"
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            articulo: articuloBorrado,
+            mensaje: "El articulo se ha borrado con exito."
+        })
+    })
+
+
+}
+
 
 module.exports = {
     prueba,
     cursos,
     crear,
     listar,
-    listarUno
+    listarUno,
+    borrar
 }
 
 
