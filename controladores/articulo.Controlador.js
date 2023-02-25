@@ -80,11 +80,11 @@ const listar = (req, res) => {
 
     let consulta = Articulo.find({})
 
-    if(req.params.ultimos){
+    if (req.params.ultimos) {
         consulta.limit(3)
     }
 
-    
+
 
     consulta.sort({ fecha: -1 })
         .exec((error, articulos) => {
@@ -101,11 +101,40 @@ const listar = (req, res) => {
             })
         })
 }
+
+const listarUno = (req, res) => {
+    // Recoger un id por url
+    let id = req.params.id
+
+
+    // Buscar el articulo
+    Articulo.findById(id, (error, articulo) => {
+        // Si no existe devolver el error
+        if (error || !articulo) {
+            return res.status(404).json({
+                status: "error",
+                mensaje: "No se han encontrado articulos"
+            })
+        }
+
+        // Devolver el resultado
+
+        return res.status(200).send({
+            status: "success",
+            articulo
+        })
+
+    })
+
+}
+
+
 module.exports = {
     prueba,
     cursos,
     crear,
-    listar
+    listar,
+    listarUno
 }
 
 

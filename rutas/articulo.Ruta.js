@@ -9,6 +9,7 @@ router.get('/cursos', ArticuloControlador.cursos)
 //Rutas utiles
 router.post('/crear', ArticuloControlador.crear)
 router.get('/listar/:ultimos?', ArticuloControlador.listar)
+router.get('/listarUno/:id', ArticuloControlador.listarUno)
 
 
 module.exports = router
