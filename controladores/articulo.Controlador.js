@@ -1,6 +1,10 @@
+const fs = require("fs")
+const path = require("path")
+
 const { validarArticulo } = require("../helpers/validar")
 const Articulo = require('../modelos/Articulo')
-const fs = require("fs")
+
+const { exists } = require("../modelos/Articulo")
 
 
 
@@ -206,13 +210,68 @@ const subir = (req, res) => {
     }
 }
 
+const imagen = (req, res) => {
+    let fichero = req.params.fichero
+    let ruta_fisica = "./imagenes/articulos"+fichero
+
+    
+
+    fs.stat(ruta_fisica, (error,existe) => {
+        if (existe) {
+            return res.sendFile(path.resolve(ruta_fisica))
+        } else {
+            return res.status(404).json({
+                status: "error",
+                mensaje: "La imagen no existe",
+                fichero,
+                ruta_fisica,
+                existe
+            })
+        }
+    })
+}
+
+const buscador = (req,res) =>{
+    //obtener el string de busqueda
+    let busqueda = req.params.busqueda
+
+    ///find Or
+    Articulo.find({"$or":[
+        {"titulo": {"$regex":busqueda, "$options":"i"}},
+        {"contenido": {"$regex":busqueda, "$options":"i"}}
+    ]})
+    //Orden
+    .sort({fecha: -1})
+    .exec((error,articulosEncontrados)=>{
+        if(error || !articulosEncontrados || articulosEncontrados <= 0){
+            res.status(404).json({
+                status: "error",
+                mensaje: "Articulo no encontrado"
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            articulos: articulosEncontrados
+        })
+    })
+
+    
+
+    //Ejecutar consulta
+
+    //Devolver resultado
+
+}
 module.exports = {
     crear,
     listar,
     listarUno,
     borrar,
     editar,
-    subir
+    subir,
+    imagen,
+    buscador
 }
 
 
