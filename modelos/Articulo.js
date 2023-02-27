@@ -15,7 +15,7 @@
         type: Date,
         default: Date.now
     },
-    image:{
+    imagen:{
         type:String,
         default: "default.png"
     }
